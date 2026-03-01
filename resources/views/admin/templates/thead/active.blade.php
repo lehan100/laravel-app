@@ -1,0 +1,1 @@
+@include('admin.templates.thead.column',['name'=>'Duyệt','width'=>'120','class'=>'text-center'])

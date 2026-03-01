@@ -1,0 +1,1 @@
+<div class="alert alert-danger text-white">Dữ liệu đang được cập nhật!</div>

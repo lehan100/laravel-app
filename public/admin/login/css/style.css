@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+html, body {
+    height: 100%;
+}
+html {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Tinos', sans-serif !important;
+    margin: 0;
+    color: #000;
+    font-size:100%;
+    letter-spacing: 1px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.content{
+    background: rgba(0, 0, 0, 0) url("../images/905012.jpg") no-repeat fixed center center / cover ;
+    text-align: center;
+}
+a, a:focus, a:hover{
+    text-decoration: none !important;
+    color:#fff !important;
+}
+.placeholder-fix:focus::-webkit-input-placeholder  {color:transparent !important; }
+.placeholder-fix:focus::-moz-placeholder   {color:transparent !important;}
+.placeholder-fix:-moz-placeholder   {color:transparent !important;}
+.loginpage {
+    margin: 0 auto;
+    padding: 30px;
+    background: rgba(255,255,255,.5);
+}
+/* .logo h2 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin: 0;
+    text-transform: uppercase;
+    padding-bottom: 60px;
+} */
+.loginpage input:first-child{
+    background: url(../images/user.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-origin: content-box;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: medium none;
+    height: 60px;
+    margin: 0 0 10px;
+    /* width: 100%; */
+    color: #403055;
+    font-weight: 600;
+    border-radius: 5px 5px 0 0;
+}
+.loginpage input:last-child{
+    background: url(../images/lock.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-origin: content-box;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: medium none;
+    height: 60px;
+    margin: 0 0 5px;
+    /* width: 100%; */
+    color: #403055;
+    font-weight: 600;
+    border-radius: 0 0 5px 5px;
+}
+.form-control::-moz-placeholder {
+    color: #403055 !important;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.form-control::-webkit-input-placeholder{
+    color: #403055 !important; 
+    font-weight: 600;
+    letter-spacing: 1px;    
+}
+.form-control:focus {
+    border-color: transparent;
+    box-shadow: none!important;
+    outline: 0 none;
+}
+.action-button .btn-block {
+    background-color: #06605b;
+    border: medium none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    height: 60px;
+    margin-top: 25px;
+    border-radius: 5px;
+    width: 100%;
+    letter-spacing: 2px;
+}
+.login_title h1 {
+    /* letter-spacing: -0.05em; */
+    /* line-height: 20px; */
+    margin: 0 0 30px;
+    color:#fff;
+}
+
+.login_title h1:before,.login_title h1:after {
+    content: "";
+    height: 1px;
+    position: absolute;
+    top: 10px;
+    width: 27%
+}
+
+.login_title h1:after {
+    background: #7e7e7e;
+    background: -webkit-gradient(linear, left top, right top, from(#7e7e7e), to(#fff));
+    background: linear-gradient(to right, #7e7e7e 0%, #fff 100%);
+    right: 0
+}
+
+.login_title h1:before {
+    background: #7e7e7e;
+    background: -webkit-gradient(linear, right top, left top, from(#7e7e7e), to(#fff));
+    background: linear-gradient(to left, #7e7e7e 0%, #fff 100%);
+    left: 0
+}
+
+.login_title h1:before,.login_title h1:after {
+    content: "";
+    height: 1px;
+    position: absolute;
+    top: 25px;
+    width: 15%
+}
+
+.login_title h1:after {
+    background: #7e7e7e;
+    background: -webkit-gradient(linear, left top, right top, from(#7e7e7e), to(#fff));
+    background: linear-gradient(to right, #7e7e7e 0%, #fff 100%);
+    right: 15px
+}
+
+.login_title h1:before {
+    background: #7e7e7e;
+    background: -webkit-gradient(linear, right top, left top, from(#7e7e7e), to(#fff));
+    background: linear-gradient(to left, #7e7e7e 0%, #fff 100%);
+    left: 15px
+}
+
+@media (max-width: 767px){
+    body {
+        padding: 50px 0;
+    }
+    .logo h2 {
+        padding-bottom: 40px;
+    }
+    .loginpage input:first-child, .loginpage input:last-child, .action-button .btn-block{
+        height: 45px;
+    }
+
+}

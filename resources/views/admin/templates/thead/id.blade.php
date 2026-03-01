@@ -1,0 +1,1 @@
+@include('admin.templates.thead.column',['name'=>'ID','width'=>'20','class'=>'text-center'])

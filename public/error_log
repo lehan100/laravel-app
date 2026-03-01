@@ -1,0 +1,7 @@
+[28-Feb-2024 07:15:03 UTC] PHP Fatal error:  Cannot use [] for reading in /home/ukimuaco65dd/public_html/storage/framework/views/0eaa7d73367ed3577aa951751398ead2.php on line 18
+[04-Mar-2024 04:44:29 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function php_info() in /home/ukimuaco65dd/public_html/public/index.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/ukimuaco65dd/public_html/public/index.php on line 2
+[10-Mar-2024 13:45:43 UTC] PHP Fatal error:  Label 'Artisan' already defined in /home/ukimuaco65dd/public_html/app/Http/Controllers/Admin/CacheController.php on line 48
+[08-Apr-2024 05:34:42 UTC] PHP Fatal error:  Constant expression contains invalid operations in /home/ukimuaco65dd/public_html/app/Repositories/Product/ProductEloquentRepository.php on line 29

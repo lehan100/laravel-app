@@ -1,0 +1,1 @@
+@include('admin.templates.thead.column',['name'=>'<input type="checkbox" id="checkAll" />','width'=>'20','class'=>'text-center'])

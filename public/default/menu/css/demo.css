@@ -1,0 +1,4 @@
+nav:not(.mm-menu){display: none;}
+.header{text-align: center;}
+.header{font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif;font-size: 18px;font-weight: bold;color: #fe3718;line-height: 40px;-moz-box-sizing: border-box;box-sizing: border-box;	height: 40px;padding: 0 50px; z-index: 10000;background: #384355;}
+.header a{display: block;width: 31px;height: 30px;position: absolute;top: 5px;left: 5px; font-size: 23px;line-height: 28px; color: #fff;}
