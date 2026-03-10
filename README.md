@@ -7,9 +7,9 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 <p align="center">
-  <img src="https://drive.google.com/file/d/1fubhfCqQyIbQVGfQKXXM3s--nzyQcoDG/" width="800" alt="Admin Dashboard">
+  <img src="https://lh3.googleusercontent.com/d/1fubhfCqQyIbQVGfQKXXM3s--nzyQcoDG" width="800" alt="Admin Dashboard">
 </p>
-
+ 
 ## Giới thiệu APP
 
 Lập trình full-stack CMS Admin, sử dụng Laravel/Blade.
