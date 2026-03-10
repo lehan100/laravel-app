@@ -1,22 +1,15 @@
-<p align="center">
-  <a href="https://laravel.com" target="_blank">
-    <img src="https://raw.githubusercontent.com" width="400" alt="Laravel Logo">
-  </a>
-</p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
-  <a href="https://travis-ci.org"><img src="https://travis-ci.org.svg" alt="Build Status"></a>
-  <a href="https://packagist.org"><img src="https://img.shields.io" alt="Total Downloads"></a>
-  <a href="https://packagist.org"><img src="https://img.shields.io" alt="Latest Stable Version"></a>
-  <a href="https://packagist.org"><img src="https://img.shields.io" alt="License"></a>
+<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
-
 <p align="center">
-  <img src="https://lh3.googleusercontent.com" width="800" alt="Admin Dashboard">
+  <img src="https://lh3.googleusercontent.com/d/1fubhfCqQyIbQVGfQKXXM3s--nzyQcoDG" width="800" alt="Admin Dashboard">
 </p>
-
----
-
+ 
 ## 📝 Giới thiệu APP
 
 Lập trình full-stack CMS Admin, sử dụng Laravel 12 & Blade Engine.
@@ -42,10 +35,41 @@ Lập trình full-stack CMS Admin, sử dụng Laravel 12 & Blade Engine.
 - **Search Engine:** Meilisearch (Laravel Scout)
 - **Environment:** Docker Sail (PHP 8.4)
 - **Cache:** Redis / File
-- **Tools:** phpMyAdmin tích hợp sẵn.
+- **Tools:** phpMyAdmin tích hợp sẵn.n.
 
 ## 🚀 Project Setup
 
-### 1. Khởi động môi trường Docker
+
 ```bash
+# Khởi động môi trường Docker
 ./vendor/bin/sail up -d
+./vendor/bin/sail artisan serv
+
+# Cài đặt ứng dụng
+
+./vendor/bin/sail composer install
+./vendor/bin/sail php artisan key:generate
+./vendor/bin/sail php artisan migrate --seed
+
+# Cấu hình Meilisearch (Search Engine)
+
+Dể tính năng tìm kiếm sản phẩm hoạt động chính xác (hỗ trợ gõ sai "nuot" -> "nuoc"), hãy chạy lệnh cấu hình:
+
+curl -X PATCH 'http://localhost:7700/indexes/products/settings' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{
+    "filterableAttributes": ["status", "price", "attr_color", "attr_size"],
+    "sortableAttributes": ["price", "id"],
+    "typoTolerance": { "minWordSizeForTypos": { "oneTypo": 3 } }
+  }'
+
+# Sau đó import dữ liệu:
+./vendor/bin/sail php artisan scout:import "App\Models\Product"
+
+```
+## 🔗 Truy cập nhanh
+
+**Frontend**: http://localhost
+**Backend** : http://localhost/admin
+**phpMyAdmin**: http://localhost:8080
+**Meilisearch Dashboard**: http://localhost:7700
