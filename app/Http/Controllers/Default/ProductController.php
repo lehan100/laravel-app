@@ -18,6 +18,7 @@ use App\Repositories\Store\AttributeSetRepositoryInterface;
 use App\Repositories\Rating\RatingRepositoryInterface;
 use App\Repositories\Order\OrderRepositoryInterface;
 use App\Http\Requests\Default\RatingPostRequest;
+use App\Models\Product;
 
 class ProductController extends FrontendController
 {
@@ -189,7 +190,72 @@ class ProductController extends FrontendController
             //         return $currentPage;
             //     });
             // }
-            $listItems = $this->productModel->listItems($this->params, ['task' => 'frontend-list-items-search']);
+            // $listItems = $this->productModel->listItems($this->params, ['task' => 'frontend-list-items-search']);
+            $keyword = $this->params['keyword'] ?? '';
+
+            $listItems = Product::search($keyword, function ($meilisearch, $query, $options) {
+                $filters = [];
+
+                // 1. Lọc Trạng thái
+                $filters[] = "status = 1";
+
+                // 2. Lọc Giá (Ví dụ: price >= 100 AND price <= 500)
+                if (!empty($this->params['filter_price'])) {
+                    // Tách chuỗi "0-500000,500000-1000000" của bạn
+                    $prices = explode(',', $this->params['filter_price']);
+                    $allValues = [];
+                    foreach ($prices as $p) {
+                        $range = explode('-', $p);
+                        $allValues[] = (float)$range[0];
+                        $allValues[] = (float)$range[1];
+                    }
+                    $priceMin = min($allValues);
+                    $priceMax = max($allValues);
+                    $filters[] = "price >= $priceMin AND price <= $priceMax";
+                }
+
+                // 3. Lọc Thuộc tính động (List-item)
+                if (!empty($this->params['filter_attribute'])) {
+                    foreach ($this->params['filter_attribute'] as $alias => $values) {
+                        // Meilisearch: attr_color IN ["Red", "Blue"]
+                        $valString = '"' . implode('","', $values) . '"';
+                        $filters[] = "attr_$alias IN [$valString]";
+                    }
+                }
+
+                // Gán các filter vào options của Meilisearch
+                if (!empty($filters)) {
+                    $options['filter'] = implode(' AND ', $filters);
+                }
+
+                // 4. Sắp xếp (Sort)
+                $sortMap = [
+                    'price_heigh_to_low' => ['price:desc'],
+                    'price_low_to_high'  => ['price:asc'],
+                    'position'           => ['id:desc'],
+                ];
+                $options['sort'] = $sortMap[$this->params['sort'] ?? ''] ?? ['id:desc'];
+
+                return $meilisearch->search($query, $options);
+            })
+                // 5. Quan trọng: Load các quan hệ phức tạp để hiển thị ở View (giống hệt code cũ của bạn)
+                ->query(function ($query) {
+                    $query->with([
+                        'url',
+                        'sales' => function ($q) {
+                            $q->with("info")->whereHas("info", function ($q) {
+                                $q->whereDate('date_from', '<=', now())
+                                    ->whereDate('date_to', '>=', now())
+                                    ->where('status', '1');
+                            });
+                        },
+                        'ratings' => function ($q) {
+                            $q->select('product_id', \DB::raw("SUM(rating) as sum_star"), \DB::raw("Count(id) as total_rating"))
+                                ->groupBy("product_id");
+                        }
+                    ]);
+                })
+                ->paginate($this->params['pagination']['totalItemsPerPage']);
             if (isset($request->lazyload) && $request->lazyload == true) {
                 $dataLoading = view($this->controllerView . 'ajax/list', [
                     'listItems' => $listItems,
@@ -266,7 +332,7 @@ class ProductController extends FrontendController
                 //     });
                 // }
                 $listItems = $this->productModel->listItems($this->params, ['task' => 'frontend-list-items-sale']);
-				//echo "<pre>";print_r($listItems->toArray());die();
+                //echo "<pre>";print_r($listItems->toArray());die();
                 if (isset($request->lazyload) && $request->lazyload == true) {
                     $dataLoading = view($this->controllerView . 'ajax/list', [
                         'listItems' => $listItems,
@@ -301,7 +367,7 @@ class ProductController extends FrontendController
         if ($request->id !== null) {
             $params["id"] = $request->id;
             $item = $this->productModel->getItem($params, ['task' => 'frontend-get-item']);
-           //echo "<pre>"; print_r($item->toArray());die();
+            //echo "<pre>"; print_r($item->toArray());die();
             if (!$item) {
                 abort(404);
             }
@@ -342,14 +408,14 @@ class ProductController extends FrontendController
                     $ratingObject->setDataRatingToStar($rating->rating, $rating->total_rating);
                 }
             }
-           
+
             return view($this->controllerView . 'view', [
                 'breadcrumbs' => $breadcrumbs,
                 'item' => $item,
                 'otherProducts' => $otherProducts,
                 'listRatings' => $listRatings,
                 'ratingObject' => $ratingObject,
-				'description'=> $description
+                'description' => $description
             ]);
         } else {
             abort(404);
@@ -448,8 +514,9 @@ class ProductController extends FrontendController
         $dataSearch = [];
         if ($request->keyword != "") {
             $params['keyword'] = $request->keyword;
-            $listAllProducts = $this->productModel->listItems($params, ['task' => 'fronend-get-all']);
-            $dataSearch = (new SearchHelper($listAllProducts))->search($request->keyword);
+            //$listAllProducts = $this->productModel->listItems($params, ['task' => 'fronend-get-all']);
+            //$dataSearch = (new SearchHelper($listAllProducts))->search($request->keyword);
+            $dataSearch = Product::search($params['keyword'])->paginate($this->params['pagination']['totalItemsPerPage']);
         }
         $searchResult = view($this->controllerView . 'ajax/search', [
             'dataSearch' => $dataSearch,

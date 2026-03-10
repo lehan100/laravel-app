@@ -6,63 +6,66 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
+![](https://drive.google.com/file/d/1fubhfCqQyIbQVGfQKXXM3s--nzyQcoDG/view?usp=sharing)
 
-## About Laravel
+## Giới thiệu APP
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Lập trình full-stack CMS Admin, sử dụng Laravel/Blade.
+- Frontend: Laravel/Blade kết hợp Bootstrap CSS Version 5.
+- Backend: Sử dụng AdminLTE 2 template, tập trung tối ưu xử lý logic với Laravel/Blade.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## SiteMaps
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Home: Dashboard, Quản lý Sitemap, Xem trang chủ.
+- Systems: Cấu hình trang, Quản lý Cache, Tỉnh thành (Provinces).
+- atalog: Danh mục (Category), Sản phẩm (Product), Tin tức (News).
+- Orders: Quản lý đơn hàng, Tồn kho, Tracking vận chuyển.
+- Store Products: Thuộc tính sản phẩm (Attributes), Đánh giá (Ratings).
+- Store Promotions: Mã giảm giá (Coupon), Thiết lập Khuyến mãi (Sales).
+- Media: Quản lý Vị trí (Positions), Banner quảng cáo.
+- Others: Liên hệ, Cấu hình khác...
+- Imports/Reports (đang phát triển)
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Framework: Laravel 12
+Database: MySQL 8.4
+Search: Meilisearch (Laravel Scout)
+Environment: Docker Sail (PHP 8.4)
+Cache: Redis / File
+Tools: phpMyAdmin tích hợp sẵn.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Project Setup
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Khởi động môi trường Docker
 
-## Laravel Sponsors
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan serv
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+2. Cài đặt ứng dụng
 
-### Premium Partners
+./vendor/bin/sail composer install
+./vendor/bin/sail php artisan key:generate
+./vendor/bin/sail php artisan migrate --seed
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+3. Cấu hình Meilisearch (Search Engine)
 
-## Contributing
+Dể tính năng tìm kiếm sản phẩm hoạt động chính xác (hỗ trợ gõ sai "nuot" -> "nuoc"), hãy chạy lệnh cấu hình:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+curl -X PATCH 'http://localhost:7700/indexes/products/settings' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{
+    "filterableAttributes": ["status", "price", "attr_color", "attr_size"],
+    "sortableAttributes": ["price", "id"],
+    "typoTolerance": { "minWordSizeForTypos": { "oneTypo": 3 } }
+  }'
 
-## Code of Conduct
+Sau đó import dữ liệu:
+./vendor/bin/sail php artisan scout:import "App\Models\Product"
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Truy cập nhanh
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# laravel-app
-# laravel-app
+Frontend: http://localhost
+Backend: http://localhost/admin
+phpMyAdmin: http://localhost:8080
+Meilisearch Dashboard: http://localhost:7700

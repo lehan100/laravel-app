@@ -11,16 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('product_of_option_entries')) {
         Schema::create('product_of_option_entries', function (Blueprint $table) {
-            $table->increments('id')->autoIncrement()->primary();
-            $table->integer("product_option_entries_id")->unsigned()->nullable()->default(0);
-            $table->integer("product_id")->unsigned()->nullable()->default(0);
+            $table->increments('id'); 
+
+            $table->integer("product_option_entries_id")->unsigned()->nullable();
+            $table->integer("product_id")->unsigned()->nullable();
+
             $table->integer("order")->unsigned()->nullable()->default(0);
-            $table->foreign("product_entries_id")->references("id")->on("product_option_entries")->onDelete('cascade');
-            $table->foreign("product_id")->references("id")->on("products")->onDelete('cascade');
+
+            $table->foreign("product_option_entries_id", "fk_product_option_entries")
+                ->references("id")
+                ->on("product_option_entries")
+                ->onDelete('cascade');
+
+            $table->foreign("product_id")
+                ->references("id")
+                ->on("products")
+                ->onDelete('cascade');
+
             $table->timestamps();
             $table->softDeletes();
         });
+        }
     }
 
     /**

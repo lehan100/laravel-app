@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use \Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-
+use Laravel\Scout\Searchable;
 class Product extends Model {
 
     use HasFactory,
-        SoftDeletes;
+        SoftDeletes,Searchable;
 
     protected $table = 'products';
     protected $primaryKey = 'id';
@@ -32,7 +32,29 @@ class Product extends Model {
         'hit_order'
     ];
     protected $hidden = ['created_at', 'updated_at', 'deleted_at','sort','name_ascii'];
+    public function toSearchableArray(): array
+    {
+        $this->loadMissing('attibute_sets');
 
+        $array = [
+            'id'            => (int) $this->id,
+            'name'          => $this->name,
+            'name_ascii'    => $this->name_ascii, 
+            'sku'           => $this->sku,
+            'price'         => (float) $this->price,
+            'status'        => (int) $this->status,
+            'quantity'      => (int) $this->quantity,
+        ];
+
+        if ($this->attibute_sets) {
+            foreach ($this->attibute_sets as $attribute) {
+                $key = 'attr_' . $attribute->name_alias; 
+                $array[$key] = $attribute->value;
+            }
+        }
+
+        return $array;
+    }
     public function category() {
         return $this->belongsToMany(Category::class, 'product_of_categories')
                         ->withTimestamps()->wherePivot('deleted_at', NULL);
