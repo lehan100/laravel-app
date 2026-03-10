@@ -69,7 +69,7 @@ curl -X PATCH 'http://localhost:7700/indexes/products/settings' \
 ```
 ## 🔗 Truy cập nhanh
 
-**Frontend**: http://localhost
-**Backend** : http://localhost/admin
-**phpMyAdmin**: http://localhost:8080
-**Meilisearch Dashboard**: http://localhost:7700
+- **Frontend**: http://localhost
+- **Backend** : http://localhost/admin
+- **phpMyAdmin**: http://localhost:8080
+- **Meilisearch Dashboard**: http://localhost:7700
