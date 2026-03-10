@@ -42,13 +42,12 @@ Lập trình full-stack CMS Admin, sử dụng Laravel 12 & Blade Engine.
 
 ```bash
 # Khởi động môi trường Docker
+
 ./vendor/bin/sail up -d
 
 # Cài đặt ứng dụng
 
 ./vendor/bin/sail composer install
-./vendor/bin/sail php artisan key:generate
-./vendor/bin/sail php artisan migrate --seed
 ./vendor/bin/sail artisan serv
 
 # Cấu hình Meilisearch (Search Engine)
